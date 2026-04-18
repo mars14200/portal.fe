@@ -1,8 +1,15 @@
+import MainPage from '@/pages/mainpage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
+  routes: [
+    {
+      path: '/',
+      name:'main', 
+      component: MainPage
+    }
+  ],
 })
 
 export default router
