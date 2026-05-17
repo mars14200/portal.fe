@@ -3,6 +3,7 @@ import ArticlePage from '@/pages/ArticlePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import MainPage from '@/pages/MainPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
+import { useAuthStore } from '@/stores/authStore'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -21,14 +22,31 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: LoginPage
+      component: LoginPage,
+      meta: {
+        quesOnly: true
+      }
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterPage
+      component: RegisterPage,
+      meta: {
+        quesOnly: true
+      }
     }
   ],
-})
+});
+router.beforeEach(function (to){
+const authStore = useAuthStore();
+
+if (to.meta.quesOnly) {
+  if (authStore.isAuth) {
+    return {
+      name: 'main'
+    }
+  }
+}
+});
 
 export default router

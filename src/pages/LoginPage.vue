@@ -6,42 +6,24 @@
     </div>
     <div class="row">
         <div class="col-4 offset-4">
-            <div
-                class="alert alert-danger mb-3"
-                v-if="error"
-            >
+            <div class="alert alert-danger mb-3" v-if="error">
                 {{ error }}
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    placeholder="name@example.com"
-                    v-model="email"
-                >
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" v-model="email">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Пароль</label>
-                <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    placeholder="******"
-                    v-model="password"
-                >
+                <input type="password" class="form-control" id="password" placeholder="******" v-model="password">
             </div>
-            <button
-                class="btn btn-primary"
-                @click="onSubmit"
-            >Войти</button>
+            <button class="btn btn-primary" @click="onSubmit">Войти</button>
         </div>
     </div>
 </template>
 
 <script>
-import api from '@/api';
+import { useAuthStore } from "@/stores/authStore";
 
 export default {
     data() {
@@ -55,11 +37,10 @@ export default {
         async onSubmit() {
             this.error = '';
             try {
-                const response = await api.post('/login', {
+                await useAuthStore().login({
                     email: this.email,
                     password: this.password
                 });
-                localStorage.setItem('token', response.data.token);
 
                 this.email = '';
                 this.password = '';

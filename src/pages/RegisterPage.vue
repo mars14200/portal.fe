@@ -6,62 +6,34 @@
     </div>
     <div class="row">
         <div class="col-4 offset-4">
-            <div
-                class="alert alert-danger mb-3"
-                v-if="error"
-            >
+            <div class="alert alert-danger mb-3" v-if="error">
                 {{ error }}
             </div>
             <div class="mb-3">
                 <label for="name" class="form-label">Имя</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    placeholder="Иван"
-                    v-model="name"
-                >
+                <input type="text" class="form-control" id="name" placeholder="Иван" v-model="name">
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    placeholder="name@example.com"
-                    v-model="email"
-                >
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" v-model="email">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Пароль</label>
-                <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    placeholder="******"
-                    v-model="password"
-                >
+                <input type="password" class="form-control" id="password" placeholder="******" v-model="password">
             </div>
             <div class="mb-3">
                 <label for="password_confirm" class="form-label">Повторите пароль</label>
-                <input
-                    type="password"
-                    class="form-control"
-                    id="password_confirm"
-                    placeholder="******"
-                    v-model="confirmationPassword2"
-                >
+                <input type="password" class="form-control" id="password_confirm" placeholder="******"
+                    v-model="confirmationPassword2">
             </div>
-            <button 
-                class="btn btn-primary"
-                @click="onSubmit"
-            >Зарегистрироваться</button>
+            <button class="btn btn-primary" @click="onSubmit">Зарегистрироваться</button>
         </div>
     </div>
 </template>
 
 <script>
 import api from '@/api';
+import { useAuthStore } from '@/stores/authStore';
 
 export default {
     data() {
@@ -77,13 +49,12 @@ export default {
         async onSubmit() {
             this.error = '';
             try {
-                const response = await api.post('/register', {
+                await useAuthStore().register({
                     name: this.name,
                     email: this.email,
                     password: this.password,
-                    "password_confirmation": this.confirmationPassword2
+                    confirmationPassword2: this.confirmationPassword2
                 });
-                localStorage.setItem('token', response.data.token);
 
                 this.name = '';
                 this.email = '';
